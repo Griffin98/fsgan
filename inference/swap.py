@@ -292,8 +292,10 @@ class FaceSwapping(VideoProcessBase):
             print(tgt_landmarks.shape)
             print(org_src_landmarks.shape)
             # Preserve Source Mouth Expression
-            for index in range(76, 96):
-                tgt_landmarks[index, :] = org_src_landmarks[index, :]
+            for b in range(0, tgt_landmarks.shape[0]):
+                for index in range(76, 96):
+                    tgt_landmarks[b, index, :] = org_src_landmarks[b, index, :]
+
 
             tgt_landmarks = tgt_landmarks.to(self.device)
             # tgt_mask = tgt_mask.unsqueeze(1).to(self.device)
