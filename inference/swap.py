@@ -289,6 +289,8 @@ class FaceSwapping(VideoProcessBase):
                 src_frame[p] = src_frame[p].to(self.device)
             tgt_frame = tgt_frame.to(self.device)
 
+            print(tgt_landmarks.shape)
+            print(org_src_landmarks.shape)
             # Preserve Source Mouth Expression
             for index in range(76, 96):
                 tgt_landmarks[index, :] = org_src_landmarks[index, :]
