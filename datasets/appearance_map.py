@@ -70,7 +70,7 @@ class AppearanceMapDataset(data.Dataset):
         # Load landmarks
         src_lms_path = os.path.splitext(src_vid_seq_path)[0] + landmarks_postfix
         self.src_landmarks = np.load(src_lms_path)['landmarks_smoothed']
-        self.org_src_landmarks = self.src_landmarks.copy()
+        self.org_src_landmarks = np.load(src_lms_path)['landmarks_smoothed']
         tgt_lms_path = os.path.splitext(tgt_vid_seq_path)[0] + landmarks_postfix
         self.tgt_landmarks = np.load(tgt_lms_path)['landmarks_smoothed']
 
