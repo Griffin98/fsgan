@@ -70,6 +70,7 @@ class AppearanceMapDataset(data.Dataset):
         # Load landmarks
         src_lms_path = os.path.splitext(src_vid_seq_path)[0] + landmarks_postfix
         self.src_landmarks = np.load(src_lms_path)['landmarks_smoothed']
+        self.org_src_landmarks = self.src_landmarks.copy()
         tgt_lms_path = os.path.splitext(tgt_vid_seq_path)[0] + landmarks_postfix
         self.tgt_landmarks = np.load(tgt_lms_path)['landmarks_smoothed']
 
@@ -127,6 +128,8 @@ class AppearanceMapDataset(data.Dataset):
         tgt_pose = self.tgt_poses[index]
         tgt_seg = decode_binary_mask(self.tgt_encoded_seg[index])
 
+        org_src_landmarks = self.org_src_landmarks[index]
+
         # Query source frames and meta-data given the current target pose
         query_point, tilt_angle = tgt_pose[:2], tgt_pose[2]
         tri_index = self.tri.find_simplex(query_point[:2])
@@ -171,7 +174,7 @@ class AppearanceMapDataset(data.Dataset):
             src_frames = [torch.stack([src_frames[f][p] for f in range(len(src_frames))], dim=0)
                           for p in range(len(src_frames[0]))]
 
-        return src_frames, src_landmarks, src_poses, bw, tgt_frame, tgt_landmarks, tgt_pose, tgt_seg
+        return src_frames, org_src_landmarks, src_landmarks, src_poses, bw, tgt_frame, tgt_landmarks, tgt_pose, tgt_seg
 
     def __len__(self):
         return self.tgt_poses.shape[0]

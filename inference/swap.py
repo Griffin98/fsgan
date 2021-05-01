@@ -282,7 +282,7 @@ class FaceSwapping(VideoProcessBase):
         print(f'=> Face swapping: "{src_vid_seq_name}" -> "{tgt_vid_seq_name}"...')
 
         # For each batch of frames in the target video
-        for i, (src_frame, src_landmarks, src_poses, bw, tgt_frame, tgt_landmarks, tgt_pose, tgt_mask) \
+        for i, (src_frame, org_src_landmarks, src_landmarks, src_poses, bw, tgt_frame, tgt_landmarks, tgt_pose, tgt_mask) \
                 in enumerate(tqdm(appearance_map_loader, unit='batches', file=sys.stdout)):
             # Prepare input
             for p in range(len(src_frame)):
@@ -291,7 +291,7 @@ class FaceSwapping(VideoProcessBase):
 
             # Preserve Source Mouth Expression
             for index in range(76, 96):
-                tgt_landmarks[index, :] = src_landmarks[index, :]
+                tgt_landmarks[index, :] = org_src_landmarks[index, :]
 
             tgt_landmarks = tgt_landmarks.to(self.device)
             # tgt_mask = tgt_mask.unsqueeze(1).to(self.device)
