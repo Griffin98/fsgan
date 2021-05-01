@@ -288,6 +288,11 @@ class FaceSwapping(VideoProcessBase):
             for p in range(len(src_frame)):
                 src_frame[p] = src_frame[p].to(self.device)
             tgt_frame = tgt_frame.to(self.device)
+
+            # Preserve Source Mouth Expression
+            for index in range(76, 96):
+                tgt_landmarks[index, :] = src_landmarks[index, :]
+
             tgt_landmarks = tgt_landmarks.to(self.device)
             # tgt_mask = tgt_mask.unsqueeze(1).to(self.device)
             tgt_mask = tgt_mask.unsqueeze(1).int().to(self.device).bool()   # TODO: check if the boolean tensor bug is fixed
