@@ -378,6 +378,7 @@ class VideoProcessBase(object):
             encoded_segmentations = []
             pad_prev, pad_next = r, r   # This initialization is only relevant if there is a leftover from last batch
             for i, frame in enumerate(pbar):
+                print(frame.shape)
                 frame = frame.to(self.device)
 
                 # Compute segmentation
